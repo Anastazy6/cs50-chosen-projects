@@ -1,0 +1,146 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block style %}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    min-height: 75px;
+    margin-bottom: 10px;
+    margin-left: 40.3%;
+
+}
+.form-control {
+    order: 0;
+}
+
+.msg {
+    order: 1;
+    margin-left: 10px;
+    font-size: 0.7em;
+    text-align: justify;
+    width: 50%;
+    margin-top: -5px;
+}
+{% endblock %}
+
+
+{% block main %}
+    <form action="/register" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <input id="password-zone" class="form-control" name="password" placeholder="Password" type="password">
+            <span class="msg" id="password-controller"></span>
+        </div>
+        <div class="form-group">
+            <input id="confirm-zone" class="form-control" name="confirmation" placeholder="Confirm password" type="password">
+            <span class="msg" id="confirm-controller"></span>
+        </div>
+
+        <button id="shubmit" class="btn btn-primary" type="submit" disabled="true">Register</button>
+    </form>
+    <script>
+        // HTML elements modified by JavaScripr
+        const passwordZone = document.getElementById("password-zone");
+        const passwordController = document.getElementById("password-controller");
+        const confirmZone = document.getElementById("confirm-zone");
+        const confirmController = document.getElementById("confirm-controller");
+        const shubmit = document.getElementById("shubmit");
+
+        // Stores information about the password
+        let passwordIsComplex = false;
+        let passwordAndConfirmMatch = false;
+
+
+        function checkPasswordCorrectness() {
+            if (passwordIsComplex && passwordAndConfirmMatch) return true;
+            return false;
+
+        }
+
+        function checkPasswordAndConfirmMatch(password, confirm) {
+            if (password === confirm) return true;
+            return false;
+        }
+
+        function updateConfirmController() {
+            if (passwordAndConfirmMatch) {
+                confirmController.style.color = "green";
+                confirmController.innerHTML = "Match!"
+            } else {
+                confirmController.style.color = "red";
+                confirmController.innerHTML = "Password and confirm are different";
+            }
+        }
+
+        // Regular expressions used to check the password's complexity
+        // (lower and upperase letters, digits and special chars)
+        // A password must have at least 3 od these 4 to be valid
+        let hasLowercase = new RegExp(".*[a-z].*");
+        let hasUppercase = new RegExp(".*[A-Z].*");
+        let hasDigit = new RegExp(".*\\d.*");
+        let hasSpecial = new RegExp(".*\\W.*");
+
+        function checkForComplexity(password) {
+            let fulfilledConditions = 0;
+            if (password.match(hasLowercase)) fulfilledConditions++;
+            if (password.match(hasUppercase)) fulfilledConditions++;
+            if (password.match(hasDigit)) fulfilledConditions++;
+            if (password.match(hasSpecial)) fulfilledConditions++;
+            return fulfilledConditions
+        }
+
+        passwordZone.onchange = function() {
+            let password = this.value;
+            let confirm = confirmZone.value;
+            let fulfilledConditions = checkForComplexity(password);
+
+            passwordAndConfirmMatch = checkPasswordAndConfirmMatch(password, confirm);
+            updateConfirmController();
+
+            if (password.length >= 8 && fulfilledConditions >= 3) {
+                passwordController.innerHTML = "Looks good!";
+                passwordController.style.color = "green";
+                passwordIsComplex = true;
+                shubmit.disabled = checkPasswordCorrectness();
+            } else {
+                passwordController.style.color = "red";
+                passwordIsComplex = false;
+                shubmit.disabled = true;
+
+                if (password.length < 8 && fulfilledConditions < 3) {
+                    passwordController.innerHTML = "Password must be at least 8 characters long \
+                            and contain at least one character of 3 of these \
+                            4 groups: lowercase letters, uppercase letters, \
+                            digits, special characters";
+                } else if (password.length >= 8 && fulfilledConditions < 3) {
+                    passwordController.innerHTML = "Password must contain at least one \
+                            character per at least 3 of these 4 groups: lowercase letters, \
+                            uppercase letters, digits, special characters";
+                } else {
+                    passwordController.innerHTML = "Password must be at least 8 characters long";
+                }
+            }
+        }
+
+        confirmZone.onchange = function() {
+            let password = passwordZone.value;
+            let confirm = confirmZone.value;
+
+            if (checkPasswordAndConfirmMatch(password, confirm)) {
+                shubmit.disabled = false;
+                passwordAndConfirmMatch = true;
+            } else {
+                shubmit.disabled = true;
+                passwordAndConfirmMatch = false;
+            }
+            updateConfirmController();
+        }
+    </script>
+{% endblock %}

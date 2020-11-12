@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block style %}
+#history {
+    margin: auto;
+    width: 100%;
+    text-align: left;
+}
+
+#history tr td,
+#history tr th {
+    min-width: 10%;
+    border-top: 1px solid #CFCFCF;
+    padding: 10px;
+}
+
+
+{% endblock %}
+{% block main %}
+
+    <table id="history">
+        <tr>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th>Shares</th>
+            <th>Price</th>
+            <th>TOTAL</th>
+            <th>ACTION</th>
+            <th>Date & time</th>
+        </tr>
+        {% for deal in deals %}
+        <tr class="deal">
+            <td>    {{ deal[    "symbol"    ] }}    </td>
+            <td>    {{ deal[ "company_name" ] }}    </td>
+            <td>    {{ deal[    "shares"    ] }}    </td>
+            <td>    {{ deal[  "share_price" ] }}    </td>
+            <td>    {{ deal[  "total_cost"  ] }}    </td>
+            <td>    {{ deal[  "operation"   ] }}    </td>
+            <td>    {{ deal[   "datetime"   ] }}    </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <script>
+        const deals = document.getElementsByClassName("deal");
+        let deals_count = deals.length;
+
+        for (let i = 0; i < deals_count; i++) {
+            if (i % 2 == 0) {
+                deals[i].style.backgroundColor = "ghostwhite";
+            }
+        }
+    </script>
+
+{% endblock %}
+

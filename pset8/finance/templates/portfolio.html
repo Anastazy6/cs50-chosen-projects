@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Portfolio
+{% endblock %}
+
+{% block style %}
+#portfolio {
+    margin: auto;
+    width: 100%;
+    text-align: left;
+}
+
+#portfolio tr td,
+#portfolio tr th {
+    width: 20%;
+    border-top: 1px solid #CFCFCF;
+    padding: 10px;
+}
+
+
+{% endblock %}
+{% block main %}
+
+    {% if alert %}
+    <div style="margin-top: 50px;" id="spam-alert" class="alert alert-warning" role="alert">{{ alert }}</div>
+    {% endif %}
+
+    <table id="portfolio">
+        <tr>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th>Shares</th>
+            <th>Price</th>
+            <th>TOTAL</th>
+        </tr>
+        {% for stonk in stonks %}
+        <tr class="stonk">
+            <td>    {{ stonk[    "symbol"    ] }}    </td>
+            <td>    {{ stonk[ "company_name" ] }}    </td>
+            <td>    {{ stonk[    "shares"    ] }}    </td>
+            <td>    {{ stonk[    "price"     ] }}    </td>
+            <td>    {{ stonk[  "total_price" ] }}    </td>
+        </tr>
+        {% endfor %}
+        <tr class="stonk">
+            <td>Cash</td>
+            <td></td>   <!-- 3 inner columns are empty -->
+            <td></td>
+            <td></td>
+            <td>    {{ cash }}    </td>
+        </tr>
+        <tr>
+            <td></td>   <!-- only the last column has any content in this row -->
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>    {{ total_cash }}    </td>
+        </tr>
+    </table>
+
+    <script>
+        const stonks = document.getElementsByClassName("stonk");
+        let stonk_count = stonks.length;
+
+        for (let i = 0; i < stonk_count; i++) {
+            if (i % 2 == 0) {
+                stonks[i].style.backgroundColor = "ghostwhite";
+            }
+        }
+
+        const spamAlert = document.getElementById("spam-alert");
+
+        const moneyOperation = new RegExp("Money \\w+ successfully!");
+
+        if (spamAlert.innerHTML === "") spamAlert.style.display = "none";
+        if (spamAlert.innerHTML !== "") spamAlert.style.display = "block";
+        if (spamAlert.innerHTML === "Registration successful!" ||
+                spamAlert.innerHTML === "Password changed!") {
+            spamAlert.classList.replace("alert-warning", "alert-success");
+        }
+        if (spamAlert.innerHTML.match(moneyOperation)) {
+            spamAlert.classList.replace("alert-warning", "alert-info");
+        }
+    </script>
+
+{% endblock %}
+

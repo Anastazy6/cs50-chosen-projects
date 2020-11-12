@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buy
+{% endblock %}
+
+{% block main %}
+    <form action="/buy" method="post">
+        <div class="form-group">
+            <input id="stonk_symbol" autocomplete="off" autofocus class="form-control" name="symbol" placeholder="Symbol" type="text">
+        </div>
+        <div class="form-group">
+            <input id="shares_count" class="form-control" name="shares" placeholder="Shares" type="number">
+        </div>
+        <button id="shubmit" class="btn btn-primary" type="submit" disabled>Buy</button>
+    </form>
+
+
+
+    <script>
+        const stonkSymbol = document.getElementById("stonk_symbol");
+        const sharesCount = document.getElementById("shares_count");
+        const shubmit = document.getElementById("shubmit");
+
+        stonkSymbol.onchange = function() {
+            if (this.value == "" || sharesCount.value == 0) {
+                shubmit.disabled = true;
+            } else {
+                shubmit.disabled = false;
+            }
+        }
+        sharesCount.onchange = function() {
+            if (this.value == 0 || stonkSymbol.value == "") {
+                shubmit.disabled = true;
+            } else {
+                shubmit.disabled = false;
+            }
+        }
+    </script>
+{% endblock %}

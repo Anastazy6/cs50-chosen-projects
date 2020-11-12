@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+    <form action="/sell" method="post">
+        <div class="form-group">
+            <select id="stonk_symbol"autofocus class="form-control" name="symbol" placeholder="Symbol" type="text">
+                {% for stonk in owned_stonks %}
+                <option value="{{ stonk['symbol'] }}">{{ stonk['symbol'] }}</option>
+                {% endfor %}
+        </div>
+        <div class="form-group">
+            <input id="shares_count" class="form-control" name="shares" placeholder="Shares" type="number">
+        </div>
+        <button id="shubmit" class="btn btn-primary" type="submit" disabled>Sell</button>
+    </form>
+
+    <script>
+        const stonkSymbol = document.getElementById("stonk_symbol");
+        const sharesCount = document.getElementById("shares_count");
+        const shubmit = document.getElementById("shubmit");
+
+        stonkSymbol.onchange = function() {
+            if (this.value == "" || sharesCount.value == 0) {
+                shubmit.disabled = true;
+            } else {
+                shubmit.disabled = false;
+            }
+        }
+        sharesCount.onchange = function() {
+            if (this.value == 0 || stonkSymbol.value == "") {
+                shubmit.disabled = true;
+            } else {
+                shubmit.disabled = false;
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,56 @@
+a {
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+
+
+.ToC_list a:link,
+.ToC_list a:visited,
+.halp:link {
+    color: navy;
+    text-decoration: none;
+    text-shadow: 0px 0px 2px pink,
+                 0px 0px 4px violet,
+                 0px 0px 6px navy,
+                 0px 0px 9px violet;
+}
+.navitem a:link {
+    color: violet;
+    text-decoration: none;
+    text-shadow: 0px 0px 2px navy,
+                 0px 0px 4px navy,
+                 0px 0px 6px navy,
+                 0px 0px 9px navy;
+
+}
+
+.navitem a:visited,
+.halp:visited {
+    color: lightblue;
+    text-decoration: none;
+    text-shadow: 0px 0px 4px darkblue;
+}
+
+.halp:hover,
+.navitem a:hover,
+.ToC_list a:hover {
+    color: orange;
+    text-decoration: none;
+    text-shadow: 0px -2px 5px darkred,
+                 0px -5px 7px red,
+                 0px -8px 10px orangered,
+                 0px -11px 12px orange,
+                 0px -14px 14px yellow,
+                 0px -17px 17px palegoldenrod;
+
+
+}
+
+p a:active,
+.navitem a:active,
+.ToC_list a:active {
+    text-decoration: none;
+    text-shadow: 0px 0px 10px #eeff08 ;
+    color: #67f100;
+}
